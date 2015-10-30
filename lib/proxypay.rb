@@ -28,8 +28,8 @@ module Proxypay
   private
   def self.authenticate
     auth = {
-      username:ENV["PROXY_PAY_USER"],
-      password:ENV["PROXY_PAY_PASSWORD"]
+      username:ENV["PROXYPAY_USER"],
+      password:ENV["PROXYPAY_API_KEY"]
     }
   end
 end

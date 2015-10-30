@@ -1,8 +1,6 @@
 # Proxypay
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/proxypay`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A ruby gem to connect your application with [ProxyPay](http://www.proxypay.co.ao) API that allows your application to interact with the Angolan ATM system knows as Multicaixa for online payments by reference.
 
 ## Installation
 
@@ -20,19 +18,45 @@ Or install it yourself as:
 
     $ gem install proxypay
 
+## Setup
+Make sure you setup the environment variables PROXYPAY_USER and PROXYPAY_API_KEY:
+
+```ruby
+PROXYPAY_USER=api
+PROXYPAY_API_KEY=your_api_key_obtained_from_proxypay_folks
+```
+
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+## Use the class methods to get it going
+# Get References
+Proxypay.get_references
+
+# Request a new reference - amount and expiration_date for the reference are mandatory
+Proxypay.new_reference("2000.00", "2015-10-10")
+
+# You can pass a hash of other custom columns to help you track the references.
+other_data = {invoice:"001-2015", description:"Client #{client_number} - monthly payment"}
+Proxypay.new_reference("2000.00", "2015-10-10", other_data)
+```
+work in progress...
+
+## Help and Docs for Proxypay API and proxypay gem
+- [ProxyPay API](https://developer.proxypay.co.ao)
+- [proxypay gem RDOC](http://www.rubydoc.info/gems/proxypay/0.1.1)
 
 ## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+- You can fork the project
+- bundle
+- bundle rake exec
+- Make your feature addition or fix a bug
+- Do not mess with rakefile, version or history (do not submit version bump PLEASE or put it in a different commit so we can ignore it when pull)
+- Send us the pull request
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/proxypay. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/smaziano/proxypay. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
 
 
 ## License

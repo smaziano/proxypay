@@ -10,7 +10,8 @@ Gem::Specification.new do |spec|
   spec.email         = ["sergio.maziano@gmail.com"]
 
   spec.summary       = %q{A Ruby gem for ProxyPay API(https://proxypay.co.ao) made by SmartTechys(http://smarttechys.co.ao) }
-  spec.description   = %q{A ruby library to connect your application connect with the ProxyPay API that allows yours applications interact with tha Angolan ATM system also knows as Multicaixa}
+  spec.description   = %q{A ruby gem to connect your application with ProxyPay(https://www.proxypay.co.ao) API that allows your application to interact with the Angolan ATM system knows as Multicaixa for online payments by reference.}
+
   spec.homepage      = "https://github.com/smaziano/proxypay"
   spec.license       = "MIT"
 
