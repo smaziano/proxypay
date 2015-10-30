@@ -8,21 +8,33 @@ module Proxypay
   # Fetch all available references
   def self.get_references(options={})
     options = {:basic_auth => authenticate}
-    get('/references', options).parsed_response
+    get("/references", options).parsed_response
+  end
+
+  # Fetch a specific reference by his ID string
+  def self.get_reference(id)
+    options = {:basic_auth => authenticate}
+    get("/references/#{id}", options).parsed_response
   end
 
   # Submit a request to create a new reference
   def self.new_reference(amount, expiry_date, other_data={})
-    post('/references',
+    post("/references",
       :body =>{ :reference => {:amount => amount, :expiry_date => expiry_date, :custom_fields => other_data } }.to_json,
       :basic_auth => authenticate,
       :headers => { 'Content-Type' => 'application/json'}).parsed_response
   end
 
-  # Fetch all availables payments
+  # Fetch all availables payments that have not been acknowledged.
   def self.get_payments(options={})
     options = {:basic_auth => authenticate}
-    get('/events/payments', options).parsed_response
+    get("/events/payments", options).parsed_response
+  end
+
+  # Acknowledge a payment by submitting his ID
+  def self.new_payment(id)
+    options = {:basic_auth => authenticate}
+    delete("/events/payments/#{id}", options).parsed_response
   end
 
   private
@@ -33,5 +45,3 @@ module Proxypay
     }
   end
 end
-
-#ProxyPay.find(123)

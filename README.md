@@ -30,21 +30,33 @@ PROXYPAY_API_KEY=your_api_key_obtained_from_proxypay_folks
 
 ```ruby
 ## Use the class methods to get it going
-# Get References
+
+# References
+## Fetch all available references
 Proxypay.get_references
 
-# Request a new reference - amount and expiration_date for the reference are mandatory
+## Request a new reference - amount and expiration_date for the reference are mandatory
 Proxypay.new_reference("2000.00", "2015-10-10")
 
-# You can pass a hash of other custom columns to help you track the references.
+## Request a reference and add custom fields to your reference for your identification.
 other_data = {invoice:"001-2015", description:"Client #{client_number} - monthly payment"}
 Proxypay.new_reference("2000.00", "2015-10-10", other_data)
+
+# Payments
+## Fetch all payments that haven't been acknowledged
+Proxypay.get_payments
+
+## Fetch a specific payment by passing his ID
+Proxypay.get_payment("OcSLBANU4tjRi9gfW5VUcMqkvzL")
+
+## Acknowledge a payment by passing his ID
+Proxypay.new_payment("OcSLBANU4tjRi9gfW5VUcMqkvzL")
 ```
 work in progress...
 
 ## Help and Docs for Proxypay API and proxypay gem
 - [ProxyPay API](https://developer.proxypay.co.ao)
-- [proxypay gem RDOC](http://www.rubydoc.info/gems/proxypay/0.1.1)
+- [RDOC](http://www.rubydoc.info/gems/proxypay/0.1.1)
 
 ## Development
 - You can fork the project
