@@ -1,5 +1,5 @@
-#require "./lib/proxypay/version.rb"
-require "proxypay/version"
+require "./lib/proxypay/version.rb"
+#require "proxypay/version"
 require "httparty"
 
 module Proxypay
@@ -33,9 +33,14 @@ module Proxypay
   end
 
   # Acknowledge a payment by submitting his ID
-  def self.new_payment(id)
+  def self.new_payment(id, options={})
     options = {:basic_auth => authenticate}
     delete("/events/payments/#{id}", options).parsed_response
+  end
+
+  # Acknowledge multiple payments by submitting an array of ids
+  def self.new_payments(ids)
+    delete("/events/payments", :body => { :ids => ids }.to_json, :basic_auth => authenticate, :headers => { 'Content-Type' => 'application/json'} ).parsed_response
   end
 
   private
@@ -44,5 +49,6 @@ module Proxypay
       username:ENV["PROXYPAY_USER"],
       password:ENV["PROXYPAY_API_KEY"]
     }
+    return auth
   end
 end

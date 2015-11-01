@@ -1,6 +1,6 @@
 # Proxypay
 
-A ruby gem to connect your application with [ProxyPay](http://www.proxypay.co.ao) API that allows your application to interact with the Angolan ATM system knows as Multicaixa for online payments by reference.
+A ruby gem created by [SmartTechys](http://www.smarttechys.co.ao) for the [ProxyPay](http://www.proxypay.co.ao) API by [TimeBoxed](http://www.timeboxed.co.ao) that allows online payments using Angolan ATM's reference (Multicaixa references).
 
 ## Installation
 
@@ -51,12 +51,14 @@ Proxypay.get_payment("OcSLBANU4tjRi9gfW5VUcMqkvzL")
 
 ## Acknowledge a payment by passing his ID
 Proxypay.new_payment("OcSLBANU4tjRi9gfW5VUcMqkvzL")
-```
-work in progress...
 
-## Help and Docs for Proxypay API and proxypay gem
+## Acknowledge a payment by passing and array of ID's
+ids = ["OcSLBANU4tjRi9gfW5VUcMqkvzL", "EcJLBANU4trUi8gfM6MOcMqkvzH","VxELBANU4tjRi9gfW5VUcMqkvzZ"]
+Proxypay.new_payments(ids)
+
+## Help and Docs
 - [ProxyPay API](https://developer.proxypay.co.ao)
-- [RDOC](http://www.rubydoc.info/gems/proxypay/0.1.1)
+- [RDOC](http://www.rubydoc.info/gems/proxypay/0.1.5)
 
 ## Development
 - You can fork the project
