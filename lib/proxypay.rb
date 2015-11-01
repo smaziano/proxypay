@@ -1,5 +1,5 @@
-require "./lib/proxypay/version.rb"
-#require "proxypay/version"
+#require "./lib/proxypay/version.rb"
+require "proxypay/version"
 require "httparty"
 
 module Proxypay
