@@ -55,6 +55,7 @@ Proxypay.new_payment("OcSLBANU4tjRi9gfW5VUcMqkvzL")
 ## Acknowledge a payment by passing and array of ID's
 ids = ["OcSLBANU4tjRi9gfW5VUcMqkvzL", "EcJLBANU4trUi8gfM6MOcMqkvzH","VxELBANU4tjRi9gfW5VUcMqkvzZ"]
 Proxypay.new_payments(ids)
+```
 
 ## Help and Docs
 - [ProxyPay API](https://developer.proxypay.co.ao)
