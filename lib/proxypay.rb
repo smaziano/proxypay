@@ -33,9 +33,8 @@ module Proxypay
   end
 
   # Acknowledge a payment by submitting his ID
-  def self.new_payment(id, options={})
-    options = {:basic_auth => authenticate}
-    delete("/events/payments/#{id}", options).parsed_response
+  def self.new_payment(id)
+    delete("/events/payments/#{id}", :basic_auth => authenticate).parsed_response
   end
 
   # Acknowledge multiple payments by submitting an array of ids
