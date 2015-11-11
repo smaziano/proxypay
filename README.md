@@ -52,14 +52,14 @@ Proxypay.get_payment("OcSLBANU4tjRi9gfW5VUcMqkvzL")
 ## Acknowledge a payment by passing his ID
 Proxypay.new_payment("OcSLBANU4tjRi9gfW5VUcMqkvzL")
 
-## Acknowledge a payment by passing and array of ID's
+## Acknowledge multiple payments by passing and array of ID's
 ids = ["OcSLBANU4tjRi9gfW5VUcMqkvzL", "EcJLBANU4trUi8gfM6MOcMqkvzH","VxELBANU4tjRi9gfW5VUcMqkvzZ"]
 Proxypay.new_payments(ids)
 ```
 
 ## Help and Docs
 - [ProxyPay API](https://developer.proxypay.co.ao)
-- [RDOC](http://www.rubydoc.info/gems/proxypay/0.1.6)
+- [RDOC](http://www.rubydoc.info/gems/proxypay/0.1.7)
 
 ## Development
 - You can fork the project
