@@ -61,7 +61,7 @@ module Proxypay
   end
 
   # Acknowledge a payment by submitting his ID and the API KEY
-  def self.new_payment(id, api_key)
+  def self.other_new_payment(id, api_key)
     auth = {
       username:"api",
       password:"#{api_key}"

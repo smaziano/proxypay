@@ -63,7 +63,7 @@ Proxypay.new_payment("OcSLBANU4tjRi9gfW5VUcMqkvzL")
 
 ## Acknowledge a payment by passing his ID for an specific API KEY
 api_key = "OcSLBANU4tjRi9gfW5VUcMqkvzLOcSLBANU4tjRi9gfW5VUcMqkvzL"
-Proxypay.new_payment("OcSLBANU4tjRi9gfW5VUcMqkvzL", api_key)
+Proxypay.other_new_payment("OcSLBANU4tjRi9gfW5VUcMqkvzL", api_key)
 
 ## Acknowledge multiple payments by passing and array of ID's
 ids = ["OcSLBANU4tjRi9gfW5VUcMqkvzL", "EcJLBANU4trUi8gfM6MOcMqkvzH","VxELBANU4tjRi9gfW5VUcMqkvzZ"]
