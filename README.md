@@ -72,7 +72,7 @@ Proxypay.new_payments(ids)
 
 ## Help and Docs
 - [ProxyPay API](https://developer.proxypay.co.ao)
-- [RDOC](http://www.rubydoc.info/gems/proxypay/0.1.8)
+- [RDOC](http://www.rubydoc.info/gems/proxypay/0.1.9)
 
 ## Development
 - You can fork the project
