@@ -55,6 +55,12 @@ module Proxypay
   end
 
   # Acknowledge a payment by submitting his ID
+  def self.new_payment(id)
+    options = {:basic_auth => authenticate}
+    delete("/events/payments/#{id}", options).parsed_response
+  end
+
+  # Acknowledge a payment by submitting his ID and the API KEY
   def self.new_payment(id, api_key)
     auth = {
       username:"api",
