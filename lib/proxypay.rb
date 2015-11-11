@@ -26,15 +26,42 @@ module Proxypay
       :headers => { 'Content-Type' => 'application/json'}).parsed_response
   end
 
+  # Submit a request to create a new reference on behalf of other API_KEY
+  def self.other_new_reference(amount, expiry_date, other_data={}, api_key)
+    auth = {
+      username:"api",
+      password:"#{api_key}"
+    }
+    post("/references",
+      :body =>{ :reference => {:amount => amount, :expiry_date => expiry_date, :custom_fields => other_data } }.to_json,
+      :basic_auth => auth,
+      :headers => { 'Content-Type' => 'application/json'}).parsed_response
+  end
+
+  # Fetch all the payments that have not been acknoledged (by submiting the api key)
+  def self.other_get_payments(api_key)
+    auth = {
+      username:"api",
+      password:"#{api_key}"
+    }
+    options = {:basic_auth => auth}
+    get("/events/payments", options).parsed_response
+  end
+
   # Fetch all availables payments that have not been acknowledged.
-  def self.get_payments(options={})
+  def self.get_payments
     options = {:basic_auth => authenticate}
     get("/events/payments", options).parsed_response
   end
 
   # Acknowledge a payment by submitting his ID
-  def self.new_payment(id)
-    delete("/events/payments/#{id}", :basic_auth => authenticate).parsed_response
+  def self.new_payment(id, api_key)
+    auth = {
+      username:"api",
+      password:"#{api_key}"
+    }
+    options = {:basic_auth => auth}
+    delete("/events/payments/#{id}", options).parsed_response
   end
 
   # Acknowledge multiple payments by submitting an array of ids

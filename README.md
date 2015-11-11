@@ -42,15 +42,28 @@ Proxypay.new_reference("2000.00", "2015-10-10")
 other_data = {invoice:"001-2015", description:"Client #{client_number} - monthly payment"}
 Proxypay.new_reference("2000.00", "2015-10-10", other_data)
 
+## Request a reference and add custom fields to your reference for your identification on using a specific API_KEY
+other_data = {invoice:"001-2015", description:"Client #{client_number} - monthly payment"}
+api_key = "OcSLBANU4tjRi9gfW5VUcMqkvzLOcSLBANU4tjRi9gfW5VUcMqkvzL"
+Proxypay.other_new_reference("2000.00", "2015-10-10", other_data, api_key)
+
 # Payments
 ## Fetch all payments that haven't been acknowledged
 Proxypay.get_payments
+
+## Fetch all payments that haven't been acknowledged for an specific API KEY
+api_key = "OcSLBANU4tjRi9gfW5VUcMqkvzLOcSLBANU4tjRi9gfW5VUcMqkvzL"
+Proxypay.other_get_payments(api_key)
 
 ## Fetch a specific payment by passing his ID
 Proxypay.get_payment("OcSLBANU4tjRi9gfW5VUcMqkvzL")
 
 ## Acknowledge a payment by passing his ID
 Proxypay.new_payment("OcSLBANU4tjRi9gfW5VUcMqkvzL")
+
+## Acknowledge a payment by passing his ID for an specific API KEY
+api_key = "OcSLBANU4tjRi9gfW5VUcMqkvzLOcSLBANU4tjRi9gfW5VUcMqkvzL"
+Proxypay.new_payment("OcSLBANU4tjRi9gfW5VUcMqkvzL", api_key)
 
 ## Acknowledge multiple payments by passing and array of ID's
 ids = ["OcSLBANU4tjRi9gfW5VUcMqkvzL", "EcJLBANU4trUi8gfM6MOcMqkvzH","VxELBANU4tjRi9gfW5VUcMqkvzZ"]
@@ -59,7 +72,7 @@ Proxypay.new_payments(ids)
 
 ## Help and Docs
 - [ProxyPay API](https://developer.proxypay.co.ao)
-- [RDOC](http://www.rubydoc.info/gems/proxypay/0.1.7)
+- [RDOC](http://www.rubydoc.info/gems/proxypay/0.1.8)
 
 ## Development
 - You can fork the project
