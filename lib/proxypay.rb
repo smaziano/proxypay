@@ -4,7 +4,7 @@ require "httparty"
 
 module Proxypay
   include HTTParty
-  base_uri "api.proxypay.co.ao"
+  base_uri "https://api.proxypay.co.ao"
 
   # Fetch all available references
   def self.get_references(options={})
