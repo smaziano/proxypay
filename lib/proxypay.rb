@@ -17,14 +17,20 @@ module Proxypay
     # request query options
     options = {limit: 20, offset: 0, status: nil, q: nil}.merge!(options)
     # query options
-    case options
-    when options[:status] != nil && options[:q] == nil
-      get("/references?limit=#{options[:limit]}&offset=#{options[:offset]}&status=#{options[:status]}", content).parsed_response
-    when options[:q] != nil
-      get("/references?#{options[:q]}&limit=#{options[:limit]}&offset=#{options[:offset]}", content).parsed_response
-    else
-      get("/references?limit=#{options[:limit]}&offset=#{options[:offset]}", content).parsed_response
-    end
+    case options != nil
+      # get refs with provided status w/o specific custom query
+      when options.fetch(:status) != nil && options.fetch(:q) == nil
+        get("/references?limit=#{options[:limit]}&offset=#{options[:offset]}&status=#{options[:status]}", content).parsed_response
+      # get refs with provided custom query with specifc status
+      when options.fetch(:status) != nil && options.fetch(:q) != nil
+        get("/references?q=#{options[:q]}&limit=#{options[:limit]}&offset=#{options[:offset]}&status=#{options[:status]}", content).parsed_response
+      # get refs with provided custom query w/o providing specific status
+      when options.fetch(:status) == nil && options.fetch(:q) != nil
+        get("/references?q=#{options[:q]}&limit=#{options[:limit]}&offset=#{options[:offset]}", content).parsed_response
+      else
+        # just get all the reference as per the api defaults (when there is no args provided)
+        get("/references", content).parsed_response
+      end
   end
 
   # Fetch a specific reference by his ID string
@@ -64,9 +70,23 @@ module Proxypay
   end
 
   # Fetch all availables payments that have not been acknowledged.
-  def self.get_payments
-    options = {:basic_auth => authenticate}
-    get("/events/payments", options).parsed_response
+  def self.get_payments(options={})
+    # request body and header
+    content = {}
+    auth = {:basic_auth => authenticate}
+    body = {:headers => {'Content-Type' => 'application/json'}}
+    content.merge!(auth)
+    content.merge!(body)
+
+    # request query options
+    options = {n: nil}.merge!(options)
+    if options.fetch(:n) == nil
+      # get payments without providing any number(quantity)
+      get("/events/payments", content).parsed_response
+    else
+      # get payments with based on the number(quantity) provided
+      get("/events/payments?n=#{options[:n]}", content).parsed_response
+    end
   end
 
   # Acknowledge a payment by submitting his ID
