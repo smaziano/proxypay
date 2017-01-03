@@ -70,9 +70,23 @@ module Proxypay
   end
 
   # Fetch all availables payments that have not been acknowledged.
-  def self.get_payments
-    options = {:basic_auth => authenticate}
-    get("/events/payments", options).parsed_response
+  def self.get_payments(options={})
+    # request body and header
+    content = {}
+    auth = {:basic_auth => authenticate}
+    body = {:headers => {'Content-Type' => 'application/json'}}
+    content.merge!(auth)
+    content.merge!(body)
+
+    # request query options
+    options = {n: nil}.merge!(options)
+    if options.fetch(:n) == nil
+      # get payments without providing any number(quantity)
+      get("/events/payments", content).parsed_response
+    else
+      # get payments with based on the number(quantity) provided
+      get("/events/payments?n=#{options[:n]}", content).parsed_response
+    end
   end
 
   # Acknowledge a payment by submitting his ID
