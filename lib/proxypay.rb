@@ -19,11 +19,11 @@ module Proxypay
     # query options
     case options
     when options[:status] != nil && options[:q] == nil
-      get("/references?limit=#{options[:limit]}&offset=#{options[:offset]}&status=#{options[:status]}", options).parsed_response
+      get("/references?limit=#{options[:limit]}&offset=#{options[:offset]}&status=#{options[:status]}", content).parsed_response
     when options[:q] != nil
-      get("/references?#{options[:q]}&limit=#{options[:limit]}&offset=#{options[:offset]}", options).parsed_response
+      get("/references?#{options[:q]}&limit=#{options[:limit]}&offset=#{options[:offset]}", content).parsed_response
     else
-      get("/references?limit=#{options[:limit]}&offset=#{options[:offset]}", options).parsed_response
+      get("/references?limit=#{options[:limit]}&offset=#{options[:offset]}", content).parsed_response
     end
   end
 
