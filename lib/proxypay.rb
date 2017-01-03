@@ -8,8 +8,23 @@ module Proxypay
 
   # Fetch all available references
   def self.get_references(options={})
-    options = {:basic_auth => authenticate}
-    get("/references", options).parsed_response
+    # request body and header
+    content = {}
+    auth = {:basic_auth => authenticate}
+    body = {:headers => {'Content-Type' => 'application/json'}}
+    content.merge!(auth)
+    content.merge!(body)
+    # request query options
+    options = {limit: 20, offset: 0, status: nil, q: nil}.merge!(options)
+    # query options
+    case options
+    when options[:status] != nil && options[:q] == nil
+      get("/references?limit=#{options[:limit]}&offset=#{options[:offset]}&status=#{options[:status]}", options).parsed_response
+    when options[:q] != nil
+      get("/references?#{options[:q]}&limit=#{options[:limit]}&offset=#{options[:offset]}", options).parsed_response
+    else
+      get("/references?limit=#{options[:limit]}&offset=#{options[:offset]}", options).parsed_response
+    end
   end
 
   # Fetch a specific reference by his ID string
