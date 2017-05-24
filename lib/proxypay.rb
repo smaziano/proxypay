@@ -18,19 +18,19 @@ module Proxypay
     options = {limit: 20, offset: 0, status: nil, q: nil}.merge!(options)
     # query options
     case options != nil
-      # get refs with provided status w/o specific custom query
-      when options.fetch(:status) != nil && options.fetch(:q) == nil
-        get("/references?limit=#{options[:limit]}&offset=#{options[:offset]}&status=#{options[:status]}", content).parsed_response
-      # get refs with provided custom query with specifc status
-      when options.fetch(:status) != nil && options.fetch(:q) != nil
-        get("/references?q=#{options[:q]}&limit=#{options[:limit]}&offset=#{options[:offset]}&status=#{options[:status]}", content).parsed_response
-      # get refs with provided custom query w/o providing specific status
-      when options.fetch(:status) == nil && options.fetch(:q) != nil
-        get("/references?q=#{options[:q]}&limit=#{options[:limit]}&offset=#{options[:offset]}", content).parsed_response
-      else
-        # just get all the reference as per the api defaults (when there is no args provided)
-        get("/references", content).parsed_response
-      end
+    # get refs with provided status w/o specific custom query
+    when options.fetch(:status) != nil && options.fetch(:q) == nil
+      get("/references?limit=#{options[:limit]}&offset=#{options[:offset]}&status=#{options[:status]}", content).parsed_response
+    # get refs with provided custom query with specifc status
+    when options.fetch(:status) != nil && options.fetch(:q) != nil
+      get("/references?q=#{options[:q]}&limit=#{options[:limit]}&offset=#{options[:offset]}&status=#{options[:status]}", content).parsed_response
+    # get refs with provided custom query w/o providing specific status
+    when options.fetch(:status) == nil && options.fetch(:q) != nil
+      get("/references?q=#{options[:q]}&limit=#{options[:limit]}&offset=#{options[:offset]}", content).parsed_response
+    else
+      # just get all the reference as per the api defaults (when there is no args provided)
+      get("/references", content).parsed_response
+    end
   end
 
   # Fetch a specific reference by his ID string
@@ -41,8 +41,8 @@ module Proxypay
 
   # Submit a request to create a new reference
   def self.new_reference(amount, expiry_date, other_data={})
-    post("/references",
-      :body =>{ :reference => {:amount => amount, :expiry_date => expiry_date, :custom_fields => other_data } }.to_json,
+    post("/references", 
+      :body =>{ :reference => {:amount => amount, :expiry_date => expiry_date, :custom_fields => other_data } }.to_json, 
       :basic_auth => authenticate,
       :headers => { 'Content-Type' => 'application/json'}).parsed_response
   end
