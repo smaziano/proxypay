@@ -8,6 +8,7 @@ module Proxypay
 
   # Fetch all available references
   def self.get_references(options={})
+    set_base_url(options.delete(:is_test))
     # request body and header
     content = {}
     auth = {:basic_auth => authenticate}
@@ -34,21 +35,24 @@ module Proxypay
   end
 
   # Fetch a specific reference by his ID string
-  def self.get_reference(id)
+  def self.get_reference(id, options = {})
+    set_base_url(options.delete(:is_test))
     options = {:basic_auth => authenticate}
     get("/references/#{id}", options).parsed_response
   end
 
   # Submit a request to create a new reference
   def self.new_reference(amount, expiry_date, other_data={})
-    post("/references", 
-      :body =>{ :reference => {:amount => amount, :expiry_date => expiry_date, :custom_fields => other_data } }.to_json, 
+    set_base_url(other_data.delete(:is_test))
+    post("/references",
+      :body =>{ :reference => {:amount => amount, :expiry_date => expiry_date, :custom_fields => other_data } }.to_json,
       :basic_auth => authenticate,
       :headers => { 'Content-Type' => 'application/json'}).parsed_response
   end
 
   # Submit a request to create a new reference on behalf of other API_KEY
   def self.other_new_reference(amount, expiry_date, other_data={}, api_key)
+    set_base_url(other_data.delete(:is_test))
     auth = {
       username:"api",
       password:"#{api_key}"
@@ -60,7 +64,8 @@ module Proxypay
   end
 
   # Fetch all the payments that have not been acknoledged (by submiting the api key)
-  def self.other_get_payments(api_key)
+  def self.other_get_payments(api_key, options = {})
+    set_base_url(options.delete(:is_test))
     auth = {
       username:"api",
       password:"#{api_key}"
@@ -71,6 +76,7 @@ module Proxypay
 
   # Fetch all availables payments that have not been acknowledged.
   def self.get_payments(options={})
+    set_base_url(options.delete(:is_test))
     # request body and header
     content = {}
     auth = {:basic_auth => authenticate}
@@ -90,13 +96,15 @@ module Proxypay
   end
 
   # Acknowledge a payment by submitting his ID
-  def self.new_payment(id)
+  def self.new_payment(id, options = {})
+    set_base_url(options.delete(:is_test))
     options = {:basic_auth => authenticate}
     delete("/events/payments/#{id}", options).parsed_response
   end
 
   # Acknowledge a payment by submitting his ID and the API KEY
-  def self.other_new_payment(id, api_key)
+  def self.other_new_payment(id, api_key, options = {})
+    set_base_url(options.delete(:is_test))
     auth = {
       username:"api",
       password:"#{api_key}"
@@ -106,8 +114,13 @@ module Proxypay
   end
 
   # Acknowledge multiple payments by submitting an array of ids
-  def self.new_payments(ids)
+  def self.new_payments(ids, options = {})
+    set_base_url(options.delete(:is_test))
     delete("/events/payments", :body => { :ids => ids }.to_json, :basic_auth => authenticate, :headers => { 'Content-Type' => 'application/json'} ).parsed_response
+  end
+
+  def self.set_base_url(is_test = false)
+    self.base_uri is_test ? "https://api.proxypay.co.ao/tests" : "https://api.proxypay.co.ao"
   end
 
   private
