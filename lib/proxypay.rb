@@ -27,7 +27,7 @@ module Proxypay
 
   # Submit a request to create a new reference
   def self.new_reference(amount, expiry_date, options={})
-    # new_reference(78654.90, '12-12-2012', custom_fields: {foo: 'F0000-45', bar: 'MMM'}, api_key: 'ctsrxte56v8bgfyv7fuf676t7o89099y85ce6f', is_test: true)
+    # new_reference(78654.90, '12-12-2012', custom_fields: {foo: 'F0000-45', bar: 'MMM'}, api_key: 'ctsrxte56v8my_keyv7fuf676t7o89099y85ce6f', is_test: true)
     set_base_url(options.delete(:is_test))
     content = {}
     content[:basic_auth] = authenticate(options.delete(:api_key))
