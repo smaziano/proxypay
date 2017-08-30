@@ -59,7 +59,7 @@ module Proxypay
   def self.new_payments(ids, options = {})
     set_base_url(options.delete(:is_test))
     content = {}
-    content[:body] = { :ids => ids }.to_json]
+    content[:body] = { :ids => ids }.to_json
     content[:basic_auth] = authenticate(options.delete(:api_key))
     content[:headers] = {'Content-Type' => 'application/json'}
     delete("/events/payments", content).parsed_response
@@ -72,8 +72,8 @@ module Proxypay
   private
   def self.authenticate(api_key = nil)
     auth = {
-      username: api_key.present? 'api' : ENV["PROXYPAY_USER"],
-      password: api_key.present?  api_key : ENV["PROXYPAY_API_KEY"]
+      username: api_key.nil? ? ENV["PROXYPAY_USER"] : 'api',
+      password: api_key.nil? ? ENV["PROXYPAY_API_KEY"] : api_key
     }
     return auth
   end
