@@ -7,114 +7,73 @@ module Proxypay
   base_uri "https://api.proxypay.co.ao"
 
   # Fetch all available references
-  def self.get_references(options={})
+  def self.get_references(options = {})
+    # Proxypay.get_references(query: {limit: 20}, is_test: true, api_key: '0djwano5yth94ihrtw34ot9cehn9emo')
+    set_base_url(options.delete(:is_test))
     # request body and header
     content = {}
-    auth = {:basic_auth => authenticate}
-    body = {:headers => {'Content-Type' => 'application/json'}}
-    content.merge!(auth)
-    content.merge!(body)
-    # request query options
-    options = {limit: 20, offset: 0, status: nil, q: nil}.merge!(options)
-    # query options
-    case options != nil
-    # get refs with provided status w/o specific custom query
-    when options.fetch(:status) != nil && options.fetch(:q) == nil
-      get("/references?limit=#{options[:limit]}&offset=#{options[:offset]}&status=#{options[:status]}", content).parsed_response
-    # get refs with provided custom query with specifc status
-    when options.fetch(:status) != nil && options.fetch(:q) != nil
-      get("/references?q=#{options[:q]}&limit=#{options[:limit]}&offset=#{options[:offset]}&status=#{options[:status]}", content).parsed_response
-    # get refs with provided custom query w/o providing specific status
-    when options.fetch(:status) == nil && options.fetch(:q) != nil
-      get("/references?q=#{options[:q]}&limit=#{options[:limit]}&offset=#{options[:offset]}", content).parsed_response
-    else
-      # just get all the reference as per the api defaults (when there is no args provided)
-      get("/references", content).parsed_response
-    end
+    content[:basic_auth] = authenticate(options.delete(:api_key))
+    content[:headers] = {'Content-Type' => 'application/json'}
+    content[:query] = options.delete(:query) || {}
+    get("/references", content).parsed_response
   end
 
   # Fetch a specific reference by his ID string
-  def self.get_reference(id)
-    options = {:basic_auth => authenticate}
+  def self.get_reference(id, options = {})
+    set_base_url(options.delete(:is_test))
+    options = {:basic_auth => authenticate(options.delete(:api_key))}
     get("/references/#{id}", options).parsed_response
   end
 
   # Submit a request to create a new reference
-  def self.new_reference(amount, expiry_date, other_data={})
-    post("/references", 
-      :body =>{ :reference => {:amount => amount, :expiry_date => expiry_date, :custom_fields => other_data } }.to_json, 
-      :basic_auth => authenticate,
-      :headers => { 'Content-Type' => 'application/json'}).parsed_response
-  end
-
-  # Submit a request to create a new reference on behalf of other API_KEY
-  def self.other_new_reference(amount, expiry_date, other_data={}, api_key)
-    auth = {
-      username:"api",
-      password:"#{api_key}"
-    }
-    post("/references",
-      :body =>{ :reference => {:amount => amount, :expiry_date => expiry_date, :custom_fields => other_data } }.to_json,
-      :basic_auth => auth,
-      :headers => { 'Content-Type' => 'application/json'}).parsed_response
-  end
-
-  # Fetch all the payments that have not been acknoledged (by submiting the api key)
-  def self.other_get_payments(api_key)
-    auth = {
-      username:"api",
-      password:"#{api_key}"
-    }
-    options = {:basic_auth => auth}
-    get("/events/payments", options).parsed_response
+  def self.new_reference(amount, expiry_date, options={})
+    # new_reference(78654.90, '12-12-2012', custom_fields: {foo: 'F0000-45', bar: 'MMM'}, api_key: 'ctsrxte56v8my_keyv7fuf676t7o89099y85ce6f', is_test: true)
+    set_base_url(options.delete(:is_test))
+    content = {}
+    content[:basic_auth] = authenticate(options.delete(:api_key))
+    content[:body] = {:reference => {:amount => amount, :expiry_date => expiry_date, custom_fields: (options.delete(:custom_fields) || {})}}.to_json
+    content[:headers] = {'Content-Type' => 'application/json'}
+    post("/references", content).parsed_response
   end
 
   # Fetch all availables payments that have not been acknowledged.
   def self.get_payments(options={})
+    # Proxypay.get_payments(query: {limit: 20}, is_test: true, api_key: '0djwano5yth94ihrtw34ot9cehn9emo')
+    set_base_url(options.delete(:is_test))
     # request body and header
     content = {}
-    auth = {:basic_auth => authenticate}
-    body = {:headers => {'Content-Type' => 'application/json'}}
-    content.merge!(auth)
-    content.merge!(body)
-
-    # request query options
-    options = {n: nil}.merge!(options)
-    if options.fetch(:n) == nil
-      # get payments without providing any number(quantity)
-      get("/events/payments", content).parsed_response
-    else
-      # get payments with based on the number(quantity) provided
-      get("/events/payments?n=#{options[:n]}", content).parsed_response
-    end
+    content[:basic_auth] = authenticate(options.delete(:api_key))
+    content[:headers] = {'Content-Type' => 'application/json'}
+    content[:query] = options.delete(:query) || {}
+    get("/events/payments", content).parsed_response
   end
 
   # Acknowledge a payment by submitting his ID
-  def self.new_payment(id)
-    options = {:basic_auth => authenticate}
-    delete("/events/payments/#{id}", options).parsed_response
-  end
-
-  # Acknowledge a payment by submitting his ID and the API KEY
-  def self.other_new_payment(id, api_key)
-    auth = {
-      username:"api",
-      password:"#{api_key}"
-    }
-    options = {:basic_auth => auth}
-    delete("/events/payments/#{id}", options).parsed_response
+  def self.new_payment(id, options = {})
+    set_base_url(options.delete(:is_test))
+    content = {:basic_auth => authenticate(options.delete(:api_key))}
+    delete("/events/payments/#{id}", content).parsed_response
   end
 
   # Acknowledge multiple payments by submitting an array of ids
-  def self.new_payments(ids)
-    delete("/events/payments", :body => { :ids => ids }.to_json, :basic_auth => authenticate, :headers => { 'Content-Type' => 'application/json'} ).parsed_response
+  def self.new_payments(ids, options = {})
+    set_base_url(options.delete(:is_test))
+    content = {}
+    content[:body] = { :ids => ids }.to_json
+    content[:basic_auth] = authenticate(options.delete(:api_key))
+    content[:headers] = {'Content-Type' => 'application/json'}
+    delete("/events/payments", content).parsed_response
+  end
+
+  def self.set_base_url(is_test = false)
+    self.base_uri is_test == true ? "https://api.proxypay.co.ao/tests" : "https://api.proxypay.co.ao"
   end
 
   private
-  def self.authenticate
+  def self.authenticate(api_key = nil)
     auth = {
-      username:ENV["PROXYPAY_USER"],
-      password:ENV["PROXYPAY_API_KEY"]
+      username: api_key.nil? ? ENV["PROXYPAY_USER"] : 'api',
+      password: api_key.nil? ? ENV["PROXYPAY_API_KEY"] : api_key
     }
     return auth
   end
