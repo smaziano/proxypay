@@ -88,9 +88,9 @@ module Proxypay
     set_base_url(options.delete(:is_test))
     content = {}
     content[:basic_auth] = authenticate(options.delete(:api_key))
-    content[:body] = {:customer => {:id => id.to_s, :name => nome.to_s, :mobile => telemovel.to_s, :email => email.to_s}}.to_json
+    content[:body] = {:customer => {:name => nome.to_s, :mobile => telemovel.to_s, :email => email.to_s}}.to_json
     content[:headers] = {'Content-Type' => 'application/json'}
-    put("/customers", content).parsed_response
+    put("/customers/#{id}", content).parsed_response
   end
 
   def self.set_base_url(is_test = false)
