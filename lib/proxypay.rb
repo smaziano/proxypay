@@ -31,7 +31,7 @@ module Proxypay
     set_base_url(options.delete(:is_test))
     content = {}
     content[:basic_auth] = authenticate(options.delete(:api_key))
-    content[:body] = {:reference => {:amount => amount, :expiry_date => expiry_date, custom_fields: (options.delete(:custom_fields) || {})}}.to_json
+    content[:body] = {:reference => {:amount => amount.to_s, :expiry_date => expiry_date.to_s, custom_fields: (options.delete(:custom_fields) || {})}}.to_json
     content[:headers] = {'Content-Type' => 'application/json'}
     post("/references", content).parsed_response
   end
@@ -65,6 +65,7 @@ module Proxypay
     delete("/events/payments", content).parsed_response
   end
 
+  # Get a list of customers
   def self.get_customers(options = {})
     set_base_url(options.delete(:is_test))
     # request body and header
@@ -75,17 +76,19 @@ module Proxypay
     get("/customers", content).parsed_response
   end
 
+  # get a customer by id
   def self.get_customer(id, options = {})
     set_base_url(options.delete(:is_test))
     options = {:basic_auth => authenticate(options.delete(:api_key))}
     get("/customers/#{id}", options).parsed_response
   end
 
-  def self.new_customer(nome, telemovel, email, options = {})
+  # Store a new customer or update one
+  def self.new_customer(id, nome, telemovel, email, options = {})
     set_base_url(options.delete(:is_test))
     content = {}
     content[:basic_auth] = authenticate(options.delete(:api_key))
-    content[:body] = {:customer => {:name => nome, :mobile => telemovel, :email => email}}.to_json
+    content[:body] = {:customer => {:id => id.to_s, :name => nome.to_s, :mobile => telemovel.to_s, :email => email.to_s}}.to_json
     content[:headers] = {'Content-Type' => 'application/json'}
     put("/customers", content).parsed_response
   end
