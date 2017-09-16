@@ -65,6 +65,31 @@ module Proxypay
     delete("/events/payments", content).parsed_response
   end
 
+  def self.get_customers(options = {})
+    set_base_url(options.delete(:is_test))
+    # request body and header
+    content = {}
+    content[:basic_auth] = authenticate(options.delete(:api_key))
+    content[:headers] = {'Content-Type' => 'application/json'}
+    content[:query] = options.delete(:query) || {}
+    get("/customers", content).parsed_response
+  end
+
+  def self.get_customer(id, options = {})
+    set_base_url(options.delete(:is_test))
+    options = {:basic_auth => authenticate(options.delete(:api_key))}
+    get("/customers/#{id}", options).parsed_response
+  end
+
+  def self.new_customer(nome, telemovel, email, options = {})
+    set_base_url(options.delete(:is_test))
+    content = {}
+    content[:basic_auth] = authenticate(options.delete(:api_key))
+    content[:body] = {:customer => {:name => nome, :mobile => telemovel, :email => email}}.to_json
+    content[:headers] = {'Content-Type' => 'application/json'}
+    put("/customers", content).parsed_response
+  end
+
   def self.set_base_url(is_test = false)
     self.base_uri is_test == true ? "https://api.proxypay.co.ao/tests" : "https://api.proxypay.co.ao"
   end
