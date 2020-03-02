@@ -1,3 +1,3 @@
 module Proxypay
-  VERSION = "1.0.0"
+  VERSION = "0.2.4"
 end
