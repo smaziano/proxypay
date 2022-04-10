@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Sergio Maziano"]
   spec.email         = ["sergio.maziano@gmail.com"]
 
-  spec.summary       = %q{A Ruby gem for ProxyPay API(https://proxypay.co.ao) made by SmartTechys(http://smarttechys.co.ao) }
+  spec.summary       = %q{A Ruby gem for ProxyPay API(https://proxypay.co.ao) made by Sergio Maziano(https://github.com/smaziano) }
   spec.description   = %q{A ruby gem to connect your application with ProxyPay(https://www.proxypay.co.ao) API that allows your application to interact with the Angolan ATM system knows as Multicaixa for online payments by reference.}
 
   spec.homepage      = "https://github.com/smaziano/proxypay"
@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 2.1.4"
-  spec.add_development_dependency "rake", "~> 13.0.1"
-  spec.add_dependency "httparty", "~> 0.13.7"
+  spec.add_development_dependency "bundler", "~> 2.3.11"
+  spec.add_development_dependency "rake", "~> 13.0.6"
+  spec.add_dependency "httparty", "~> 0.20.0"
 end
