@@ -1,6 +1,6 @@
 # Proxypay
 
-A ruby gem created by [SmartTechys](http://www.smarttechys.co.ao) for the [ProxyPay](http://www.proxypay.co.ao) API by [TimeBoxed](http://www.timeboxed.co.ao) that allows online payments using Angolan ATM's reference (Multicaixa references).
+A ruby gem created by [Sergio Maziano](http://github.com/smaziano) for the [ProxyPay](http://www.proxypay.co.ao) API that allows online payments using Angolan ATM's reference (Multicaixa references).
 
 ## Installation
 
